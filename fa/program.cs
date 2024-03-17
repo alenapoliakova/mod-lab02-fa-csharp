@@ -14,31 +14,161 @@ namespace fans
   }
 
 
+  // 1. Develop a DFA class that accepts a binary string
+  // containing exactly one '0' and at least one '1'.
   public class FA1
   {
+    public static State a = new State()
+    {
+        Name = "a",
+        IsAcceptState = false,
+        Transitions = new Dictionary<char, State>()
+    };
+
+    public static State b = new State()
+    {
+        Name = "b",
+        IsAcceptState = true,
+        Transitions = new Dictionary<char, State>()
+    };
+    public static State c = new State()
+    {
+        Name = "c",
+        IsAcceptState = false,
+        Transitions = new Dictionary<char, State>()
+    };
+
+    State InitialState = a;
+
+    public FA1()
+    {
+        a.Transitions['0'] = b;
+        a.Transitions['1'] = a;
+        b.Transitions['0'] = c;
+        b.Transitions['1'] = b;
+        c.Transitions['0'] = c;
+        c.Transitions['1'] = c;
+    }
+
     public bool? Run(IEnumerable<char> s)
     {
-      return false;
+        State currentState = InitialState;
+        foreach (var c in s) 
+        {
+            currentState = currentState.Transitions[c];
+            if (currentState == null)           
+                return null;
+        }
+        return currentState.IsAcceptState;        
     }
   }
 
+
+  // 2. Develop a DFA class that accepts a binary string
+  // containing an odd number of '0's and an odd number of '1's.
   public class FA2
   {
-    public bool? Run(IEnumerable<char> s)
+    public static State a = new State()
     {
-      return false;
+        Name = "a",
+        IsAcceptState = false,
+        Transitions = new Dictionary<char, State>()
+    };
+    public static State b = new State()
+    {
+        Name = "b",
+        IsAcceptState = false,
+        Transitions = new Dictionary<char, State>()
+    };
+    public static State c = new State()
+    {
+        Name = "c",
+        IsAcceptState = true,
+        Transitions = new Dictionary<char, State>()
+    };
+    public static State d = new State()
+    {
+        Name = "d",
+        IsAcceptState = false,
+        Transitions = new Dictionary<char, State>()
+    };
+
+    State InitialState = a;
+
+    public FA2()
+    {
+        a.Transitions['0'] = d;
+        a.Transitions['1'] = b;
+        b.Transitions['0'] = c;
+        b.Transitions['1'] = a;
+        c.Transitions['0'] = b;
+        c.Transitions['1'] = d;
+        d.Transitions['0'] = a;
+        d.Transitions['1'] = c;
     }
-  }
-  
-  public class FA3
-  {
+
     public bool? Run(IEnumerable<char> s)
     {
-      return false;
+        State currentState = InitialState;
+        foreach (var c in s)
+        {
+            currentState = currentState.Transitions[c];
+            if (currentState == null)
+                return null;
+        }
+        return currentState.IsAcceptState;
     }
   }
 
-  class Program
+  // Develop a DFA class that accepts a binary string containing '11'.
+  public class FA3
+  {
+    public static State a = new State()
+    {
+        Name = "a",
+        IsAcceptState = false,
+        Transitions = new Dictionary<char, State>()
+    };
+    public static State b = new State()
+    {
+        Name = "b",
+        IsAcceptState = false,
+        Transitions = new Dictionary<char, State>()
+    };
+    public static State c = new State()
+    {
+        Name = "c",
+        IsAcceptState = true,
+        Transitions = new Dictionary<char, State>()
+    };
+
+    State InitialState = a;
+
+    public FA3()
+    {
+        a.Transitions['0'] = a;
+        a.Transitions['1'] = b;
+        b.Transitions['0'] = a;
+        b.Transitions['1'] = c;
+        c.Transitions['0'] = c;
+        c.Transitions['1'] = c;
+    }
+
+    public bool? Run(IEnumerable<char> s)
+    {
+        State currentState = InitialState;
+        foreach (var c in s)
+        {
+            currentState = currentState.Transitions[c];
+            if (currentState == null)
+                return null;
+        }
+        return currentState.IsAcceptState;
+    }
+  }
+
+
+    class Program
   {
     static void Main(string[] args)
     {
